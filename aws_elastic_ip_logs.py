@@ -60,7 +60,7 @@ def lambda_handler(event, context):
 
             print(message)
             sns_client.publish(
-                TopicArn='arn:aws:sns:us-east-1:xxxxxxxxxx:PublicIPNotificationTopic',
+                TopicArn='arn:aws:sns:us-east-1:123456789012:PublicIPNotificationTopic',
                 Message=message,
                 Subject=subject
             )
