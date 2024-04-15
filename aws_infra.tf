@@ -4,13 +4,13 @@ provider "aws" {
 
 resource "aws_cloudwatch_event_rule" "cloudtrail_events" {
   name        = "CloudTrailEventsRule"
-  description = "Rule to capture CloudTrail events for EC2 instance creation, Elastic IP allocation, and ELB creation"
+  description = "Rule to capture CloudTrail events for EC2 instance creation, Elastic IP allocation, ELB creation, and Change Route53 DNS Records"
   event_pattern = jsonencode({
-    "source" : ["aws.ec2", "aws.elasticloadbalancing"],
+    "source" : ["aws.ec2", "aws.elasticloadbalancing", "aws.route53"],
     "detail-type" : ["AWS API Call via CloudTrail"],
     "detail" : {
-      "eventSource" : ["ec2.amazonaws.com", "elasticloadbalancing.amazonaws.com"],
-      "eventName" : ["RunInstances", "AllocateAddress", "CreateLoadBalancer"]
+      "eventSource" : ["ec2.amazonaws.com", "elasticloadbalancing.amazonaws.com", "route53.amazonaws.com"],
+      "eventName" : ["RunInstances", "AllocateAddress", "CreateLoadBalancer", "ChangeResourceRecordSets"]
     }
   })
 }
