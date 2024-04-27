@@ -1,5 +1,13 @@
 provider "aws" {
-  region = "us-east-1"
+  region = "sa-east-1"
+}
+
+terraform {
+  backend "s3" {
+    bucket = "bucket"
+    key    = "key/terraform.tfstate"
+    region = ""
+  }
 }
 
 resource "aws_cloudwatch_event_rule" "cloudtrail_events" {
@@ -10,7 +18,7 @@ resource "aws_cloudwatch_event_rule" "cloudtrail_events" {
     "detail-type" : ["AWS API Call via CloudTrail"],
     "detail" : {
       "eventSource" : ["ec2.amazonaws.com", "elasticloadbalancing.amazonaws.com", "route53.amazonaws.com"],
-      "eventName" : ["RunInstances", "AllocateAddress", "CreateLoadBalancer", "ChangeResourceRecordSets"]
+      "eventName" : ["RunInstances", "AllocateAddress", "CreateLoadBalancer", "ChangeResourceRecordSets", "CreateSecurityGroup", "DeleteSecurityGroup", "ModifySecurityGroupRules", "AuthorizeSecurityGroupIngress", "RevokeSecurityGroupIngress"]
     }
   })
 }
@@ -128,7 +136,7 @@ resource "aws_iam_policy_attachment" "lambda_role_attachment" {
 }
 
 resource "aws_cloudwatch_log_group" "lambda_log_group" {
-  name              = "/aws/lambda/Aws_External_Ip_Notified"
+  name              = "/aws/lambda/Aws_External_Ip_Notified_SA_EAST_1"
   retention_in_days = 30
 }
 
